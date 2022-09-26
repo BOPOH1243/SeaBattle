@@ -10,6 +10,7 @@ class Board:
         self.ships = []
         self.size = 6
         self.ships_limit = 2
+        self.misses = []
 
     def get_count_of_ships(self):
         return len(self.ships)
@@ -35,6 +36,7 @@ class Board:
                     ship.get_damage(square)
                     print(y, x, 'попадание по', ship)
                     return True
+        self.misses.append([y,x])
         return False
 
 
@@ -49,7 +51,8 @@ class Board:
         matrix = [['0' for i in range(self.size)] for i in range(self.size)]
         render_strings = []
         render_strings.append(vert_border_symbol.join(['E']+[str(i) for i in range(self.size)]))
-
+        for miss in self.misses:
+            matrix[miss[0]][miss[1]]='T'
         for ship in self.ships:
             for square in ship.squares:
                 if square.get_status():
